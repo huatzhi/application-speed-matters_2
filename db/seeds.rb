@@ -37,3 +37,5 @@ TOTAL_POINTS.times.each_slice(SLICE_SIZE).each_with_index do |ids, index|
   puts "Inserted #{(index + 1)*SLICE_SIZE} of #{TOTAL_POINTS} total points..."
   Point.import(fields, data, :validate => false, :timestamps => false)
 end
+
+User.find_each { |user| user.update_attribute(:points_sum, user.points.sum(:value)) }

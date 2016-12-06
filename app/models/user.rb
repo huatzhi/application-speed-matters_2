@@ -15,15 +15,24 @@ class User < ActiveRecord::Base
             format: { with: /^[\w+\-.]+@[a-z\d\-.]+\.[a-z]+$/i, multiline: true },
             uniqueness: { case_sensitive: false }
 
+  def recount_total_points
+    self.points_sum = self.points.sum(:value)
+    self.save
+  end
+
   def self.by_total_points
-    joins(:points).group('users.id').order('SUM(points.value) DESC')
+    # joins(:points).group('users.id').order('SUM(points.value) DESC')
+    # order('users.points_sum DESC')
+    reorder(points_sum: :desc)
   end
 
   def total_points
-    self.points.sum(:value)
+    # self.points.sum(:value)
+    self.points_sum
   end
 
   def full_name
     "#{first_name} #{last_name}"
   end
+
 end
