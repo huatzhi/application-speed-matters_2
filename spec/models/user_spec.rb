@@ -48,4 +48,28 @@ describe User do
       expect(user.full_name).to eq 'John Doe'
     end
   end
+
+  describe '.page' do
+    before do
+      36.times do 
+        create(:user)
+      end
+    end
+
+    it 'returns users by the number of pages' do
+      expect(User.page(1).count).to eq 10
+      expect(User.page(3).count).to eq 10
+      expect(User.page(4).count).to eq 6
+    end
+
+    it 'returns nothing if the page count is too high' do
+      expect(User.page(5).count).to eq 0
+    end
+
+    it 'return the first page if the page count is invalid' do
+      expect(User.page(0)).to eq User.page(1)
+      expect(User.page).to eq User.page(1)
+      expect(User.page('n')).to eq User.page(1)
+    end
+  end
 end
