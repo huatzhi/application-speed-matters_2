@@ -5,6 +5,9 @@ class UsersController < ApplicationController
     if @page > @totalpage
       @page = 1
     end
+    if @page < 1
+      @page = 1
+    end
     @users = User.by_total_points.page(@page)
 
   end
