@@ -35,4 +35,13 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def self.page(page=1)
+    page_number = page.to_i
+    if page_number <= 1
+      limit(10)
+    else
+      offset = (page_number - 1) * 10
+      limit(10).offset(offset)
+    end
+  end
 end

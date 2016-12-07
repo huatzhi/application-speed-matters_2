@@ -10,3 +10,33 @@
     <%= render 'user_row', :user => user %>
   <% end %>
 </table>
+<% page_numbers = [] %>
+<% if @page == 1 || @page == 2 %>
+  <% page_numbers += [1,2,3,4,5] %>
+<% elsif @page == @totalpage || @page == @totalpage - 1 %>
+  <% page_numbers += [@totalpage-4, @totalpage-3, @totalpage-2, @totalpage-1, @totalpage] %>
+<% else %>
+  <% page_numbers += [@page-2, @page-1, @page, @page+1, @page+2] %>
+<% end %>
+<% #counter = 0 %>
+<% #while counter < 5 %>
+<div class='row center-block'>
+<ul class="pagination pagination-lg">
+<% page_numbers.each do |pg| %>
+  <% next if pg < 1 %>
+  <% break if pg > @totalpage %>
+  <li><a href="/?page=<%= pg %>"><%= pg %></a></li>
+<% end %>
+</ul>
+</div>
+<% disabled_class = ' disabled' %>
+<% previous_page = "/?page="+(@page - 1).to_s %>
+<% next_page = "/?page="+(@page + 1).to_s %>
+<% previous_page = '#' if @page == 1 %>
+<% next_page = '#' if @page == @totalpage %>
+<div class='row'>
+  <ul class="pager">
+    <li class="previous<%= disabled_class if @page == 1 %>"><a href="<%= previous_page %>"><span aria-hidden="true">&larr;</span> Previous</a></li>
+    <li class="next<%= disabled_class if @page == @totalpage %>"><a href="<%= next_page %>">Next <span aria-hidden="true">&rarr;</span></a></li>
+  </ul>
+</div>
